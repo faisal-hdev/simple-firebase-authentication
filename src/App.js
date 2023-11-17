@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import {
+  GithubAuthProvider,
   GoogleAuthProvider,
   getAuth,
   signInWithPopup,
@@ -12,10 +13,11 @@ const auth = getAuth(app);
 
 function App() {
   const [user, setUser] = useState({});
-  const provider = new GoogleAuthProvider();
+  const googleProvider = new GoogleAuthProvider();
+  const githubProvider = new GithubAuthProvider();
 
   const handleGoggleSignIn = () => {
-    signInWithPopup(auth, provider)
+    signInWithPopup(auth, googleProvider)
       .then((result) => {
         const user = result.user;
         setUser(user);
@@ -32,14 +34,29 @@ function App() {
       .catch(() => setUser({}));
   };
 
+  const handleGithubSignIn = () => {
+    signInWithPopup(auth, githubProvider)
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log("error :", error);
+      });
+  };
+
   return (
     <div className="App">
-      {user.email ? (
+      {user.uid ? (
         <button onClick={handleSingOut}>Sign Out</button>
       ) : (
-        <button onClick={handleGoggleSignIn}>Google Sign In</button>
+        <>
+          <button onClick={handleGoggleSignIn}>Google Sign In</button>
+          <button onClick={handleGithubSignIn}>GitHub Sign In</button>
+        </>
       )}
-      {user.email && (
+      {user.uid && (
         <div>
           <h3>User Name : {user.displayName}</h3>
           <p>Email address : {user.email}</p>

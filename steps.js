@@ -20,4 +20,7 @@
 
 
     ========== Add a new sign in method ==========
+    1. enable the sign in method 
+    2. create github, twitter, facebook, etc. app create 
+    3. get clientId and secret
 */
