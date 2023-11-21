@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import {
+  FacebookAuthProvider,
   GithubAuthProvider,
   GoogleAuthProvider,
   getAuth,
@@ -14,6 +15,7 @@ const auth = getAuth(app);
 function App() {
   const [user, setUser] = useState({});
   const googleProvider = new GoogleAuthProvider();
+  const facebookProvider = new FacebookAuthProvider();
   const githubProvider = new GithubAuthProvider();
 
   const handleGoggleSignIn = () => {
@@ -33,6 +35,15 @@ function App() {
       .then(() => setUser({}))
       .catch(() => setUser({}));
   };
+
+  const handleFacebookSignIn = () => {
+    signInWithPopup(auth, facebookProvider)
+      .then(result => {
+        const user = result.user;
+        console.log(user);
+        setUser(user)
+    })
+  }
 
   const handleGithubSignIn = () => {
     signInWithPopup(auth, githubProvider)
@@ -54,6 +65,7 @@ function App() {
       ) : (
         <>
           <button onClick={handleGoggleSignIn}>Google Sign In</button>
+          <button onClick={handleFacebookSignIn}>Facebook Sign In</button>
           <button onClick={handleGithubSignIn}>GitHub Sign In</button>
         </>
       )}
